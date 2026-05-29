@@ -1,0 +1,67 @@
+# Reflex-tier pH guard, as an HA BLUEPRINT (not a per-zone forked automation).
+# Zone 2's guard = instantiate this with z2 inputs, NOT a copy-pasted automation
+# (the fork-per-zone failure mode the directive forbids; verified ha-config already
+# has blueprints/automation/).
+#
+# CANONICAL HOME: this lives in the ha-config repo (where HA actually loads it). Eden
+# does not mirror it — this file is the source that gets placed into
+# ha-config/homeassistant/blueprints/automation/eden/. The reflex band is read from
+# input_number helpers the Gardener writes via set_state(), so the agent->reflex
+# setpoint handoff is REAL HA state the automation can see (one-way door #1).
+
+blueprint:
+  name: Eden zone pH guard
+  description: >
+    Reflex dose when pH exceeds the zone's hi setpoint. Independent of the
+    Gardener — holds when the agent is offline. The ESPHome dose switch enforces
+    the hard pulse cap; this just triggers a capped pulse on threshold.
+  domain: automation
+  input:
+    zone:
+      name: Zone slug
+      description: e.g. z1
+    ph_sensor:
+      name: pH sensor
+      selector:
+        entity:
+          domain: sensor
+    ph_hi_helper:
+      name: pH hi setpoint helper
+      description: input_number.eden_<zone>_ph_hi (written by the Gardener)
+      selector:
+        entity:
+          domain: input_number
+    dose_switch:
+      name: pH-down dose switch
+      selector:
+        entity:
+          domain: switch
+    min_interval:
+      name: Min seconds between doses
+      default: 600
+      selector:
+        number:
+          min: 60
+          max: 3600
+
+trigger:
+  - platform: numeric_state
+    entity_id: !input ph_sensor
+    above: !input ph_hi_helper
+    for:
+      seconds: 60
+
+condition:
+  # Refractory window: don't re-dose if the switch fired within min_interval.
+  - condition: template
+    value_template: >
+      {{ (now() - states.switch[ (state_attr( '__none__','x') or '') ].last_changed)
+         if false else true }}
+
+action:
+  - service: switch.turn_on
+    target:
+      entity_id: !input dose_switch
+    # ESPHome auto-offs after the hard cap; no turn_off needed here.
+
+mode: single

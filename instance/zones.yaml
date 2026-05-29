@@ -1,0 +1,56 @@
+# The personal Eden instance (becomes "Hortus" on extraction). PURE DATA — no
+# logic. eden/ imports nothing from here; config.py reads this path.
+#
+# v1 = ONE zone, ONE basil plant, DWC. A second pot is a second block under
+# `zones:` — the structure is already N. Each resource is addressed by ROLE; the
+# entity_id + scope are the wiring detail. Every entity is eden_z1_<role> so a
+# zone 2 (eden_z2_<role>) can never collide and HA history never gets re-keyed.
+
+zones:
+  - id: z1
+    display_name: "Eden Z1 — Basil"
+    method: dwc
+    profile_id: basil_genovese
+    enabled: true
+    resources:
+      - id: z1.ph_probe
+        role: ph
+        kind: sensor
+        entity_id: sensor.eden_z1_ph
+        unit: pH
+        scope: zone
+
+      - id: z1.water_temp
+        role: water_temp
+        kind: sensor
+        entity_id: sensor.eden_z1_water_temp
+        unit: "°C"
+        scope: zone
+
+      - id: z1.air_pump_ok
+        role: air_pump_ok          # reflex/alert ONLY — never an agent actuator
+        kind: sensor
+        entity_id: binary_sensor.eden_z1_air_pump_ok
+        scope: zone
+
+      - id: z1.ph_down_dose
+        role: ph_down_dose
+        kind: actuator
+        entity_id: switch.eden_z1_ph_down_dose
+        scope: zone
+        caps:                       # NON-authoritative hints; reflex layer is the
+          op: pulse                 # sole authority for hard caps (ESPHome auto-off)
+          max_duration_s: 2.0
+          min_interval_s: 600
+
+      - id: z1.light
+        role: light
+        kind: actuator
+        entity_id: light.eden_z1_grow_light
+        scope: zone
+        caps:
+          op: set                   # 0..1 brightness
+
+      # v2 nutrient pump drops in as one more actuator entry (role: nutrient_dose);
+      # if it later feeds multiple buckets from a shared tank, set scope: shared
+      # and give it a tank-scoped id (e.g. tank.nutrient_pump). No code change.
