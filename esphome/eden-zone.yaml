@@ -1,0 +1,124 @@
+# Eden reflex-tier firmware — the multi-zone-READY ESPHome template for the XIAO
+# ESP32-S3. A second bucket is a second NODE that includes this with zone: z2 —
+# every entity is prefixed eden_<zone>_<role>, so zones can never collide and HA
+# history is never re-keyed (one-way door #5).
+#
+# This is the REFLEX (safety) tier: it holds even if the Gardener is offline.
+#   - pH dose switch has a hard auto-off (the dose cap) regardless of the agent.
+#   - light runs a photoperiod schedule independent of the agent.
+#   - air-pump failure is detected and exposed as a binary_sensor for alerting.
+# The agent only issues DESIRED actions through actuate(); this layer clamps them.
+#
+# Flash zone 2: cp eden-z1.yaml eden-z2.yaml, change `zone: z2`, re-flash.
+
+substitutions:
+  zone: z1
+  # Verified pinout (XIAO ESP32-S3 Sense, from the garden BOM):
+  i2c_sda: GPIO5        # D4 -> ADS1115
+  i2c_scl: GPIO6        # D5 -> ADS1115
+  ds18b20_pin: GPIO3    # D2
+  dose_pin: GPIO1       # D0 -> pH-Down pump MOSFET
+  light_pin: GPIO2      # D1 -> grow-light MOSFET (PWM)
+  dose_cap_s: "2s"      # HARD safety cap — the agent cannot exceed this
+  light_on_hours: "14"
+
+esphome:
+  name: eden-${zone}
+  friendly_name: "Eden ${zone}"
+
+esp32:
+  board: seeed_xiao_esp32s3
+
+api:
+logger:
+ota:
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+i2c:
+  sda: ${i2c_sda}
+  scl: ${i2c_scl}
+  scan: true
+
+ads1115:
+  - address: 0x48
+
+one_wire:
+  - platform: gpio
+    pin: ${ds18b20_pin}
+
+sensor:
+  - platform: ads1115
+    multiplexer: A0_GND
+    gain: 4.096
+    name: "eden ${zone} pH raw"
+    id: eden_${zone}_ph_raw
+    internal: true
+    update_interval: 10s
+    filters:
+      # Two-point calibration — fill after cal (two-way door, device data).
+      - calibrate_linear:
+          - 0.0 -> 0.0
+          - 3.0 -> 14.0
+
+  - platform: copy           # the published role sensor: sensor.eden_<zone>_ph
+    source_id: eden_${zone}_ph_raw
+    name: "eden ${zone} ph"
+    id: eden_${zone}_ph
+    unit_of_measurement: pH
+    accuracy_decimals: 2
+
+  - platform: dallas_temp
+    name: "eden ${zone} water temp"
+    id: eden_${zone}_water_temp
+    unit_of_measurement: "°C"
+    update_interval: 30s
+
+binary_sensor:
+  # Air-pump health (reflex/alert only — never an agent actuator). Wire a power-
+  # monitoring plug or current sensor; placeholder template here.
+  - platform: template
+    name: "eden ${zone} air pump ok"
+    id: eden_${zone}_air_pump_ok
+
+switch:
+  # pH-Down dosing pump. HARD auto-off after ${dose_cap_s} is the reflex cap: the
+  # agent calls turn_on; the firmware turns it off — the dose can never run long.
+  - platform: gpio
+    pin: ${dose_pin}
+    name: "eden ${zone} ph down dose"
+    id: eden_${zone}_ph_down_dose
+    on_turn_on:
+      - delay: ${dose_cap_s}
+      - switch.turn_off: eden_${zone}_ph_down_dose
+
+light:
+  # Grow light: dimmable, agent sets brightness; firmware owns the photoperiod.
+  - platform: monochromatic
+    output: eden_${zone}_light_pwm
+    name: "eden ${zone} grow light"
+    id: eden_${zone}_grow_light
+
+output:
+  - platform: ledc
+    pin: ${light_pin}
+    id: eden_${zone}_light_pwm
+
+# Reflex photoperiod: turns the light on/off on schedule regardless of the agent.
+time:
+  - platform: homeassistant
+    id: ha_time
+    on_time:
+      - seconds: 0
+        minutes: 0
+        hours: 6
+        then:
+          - light.turn_on:
+              id: eden_${zone}_grow_light
+              brightness: 90%
+      - seconds: 0
+        minutes: 0
+        hours: 20          # 6 + 14h photoperiod
+        then:
+          - light.turn_off: eden_${zone}_grow_light

@@ -1,0 +1,7 @@
+# Zone 1 node = the template with zone: z1. A second bucket is this file copied
+# with zone: z2 (and any pin overrides for that board). Three lines, not a fork.
+substitutions:
+  zone: z1
+
+packages:
+  eden_zone: !include eden-zone.yaml

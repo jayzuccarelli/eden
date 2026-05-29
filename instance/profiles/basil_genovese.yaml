@@ -1,0 +1,22 @@
+# A PlantProfile is pure DATA — targets/bands for one species at one stage. A
+# diverse plant or a stage transition is a new file / new values, never code.
+# Two zones can run different plants off the same engine by pointing at different
+# profiles. The reflex hard band lives as HA input_number helpers (set via
+# set_state); these are the agent's policy view of the same numbers.
+
+id: basil_genovese
+species: "Ocimum basilicum 'Genovese'"
+stage: vegetative
+
+bands:
+  ph:
+    target: 6.0
+    lo: 5.8
+    hi: 6.2
+  water_temp:
+    target: 21.0
+    lo: 18.0
+    hi: 24.0
+
+light_hours: 14
+light_brightness: 0.9    # 0..1 when on
