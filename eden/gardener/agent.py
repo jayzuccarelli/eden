@@ -14,8 +14,14 @@ verbs, (zone, role) addressed.
 from __future__ import annotations
 
 import json
+from dataclasses import asdict, is_dataclass
 
 from eden.gardener.tools import GardenerTools
+
+# Runaway guard: one tending pass should be a handful of reads + at most a couple
+# of actuations. If the model is still calling tools after this many turns,
+# something is wrong — crash the tick loudly rather than burn tokens.
+MAX_TURNS = 25
 
 TOOL_SCHEMAS = [
     {
@@ -101,10 +107,11 @@ TOOL_SCHEMAS = [
 
 
 class Gardener:
-    def __init__(self, tools: GardenerTools, model: str, system_prompt: str) -> None:
+    def __init__(self, tools: GardenerTools, model: str, system_prompt: str, client=None) -> None:
         self.tools = tools
         self.model = model
         self.system_prompt = system_prompt
+        self.client = client  # injectable for tests; created lazily in run()
 
     def dispatch(self, name: str, args: dict):
         """Route a model tool call to GardenerTools. The whole agent->hardware
@@ -133,13 +140,75 @@ class Gardener:
         raise ValueError(f"unknown tool: {name}")
 
     def run(self, instruction: str) -> str:
-        """STUB: one agentic turn. Fill in with the Anthropic SDK call loop
-        (messages + TOOL_SCHEMAS, dispatch each tool_use, feed results back). The
-        contract above is what matters for the design; the SDK wiring is mechanical.
-        """
-        raise NotImplementedError(
-            "wire the Anthropic SDK loop here; TOOL_SCHEMAS + dispatch() are ready"
-        )
+        """One agentic tending pass: messages + TOOL_SCHEMAS, dispatch each
+        tool_use through the audit chokepoint, feed results back, return the
+        final text. Manual loop (not the SDK tool runner) on purpose — every
+        hardware-touching call must route through dispatch()."""
+        if self.client is None:
+            import anthropic
+
+            self.client = anthropic.Anthropic()
+
+        messages = [{"role": "user", "content": instruction}]
+        for _ in range(MAX_TURNS):
+            response = self.client.messages.create(
+                model=self.model,
+                max_tokens=16000,
+                thinking={"type": "adaptive"},
+                system=[
+                    {
+                        "type": "text",
+                        "text": self.system_prompt,
+                        "cache_control": {"type": "ephemeral"},
+                    }
+                ],
+                tools=TOOL_SCHEMAS,
+                messages=messages,
+            )
+            if response.stop_reason != "tool_use":
+                return "".join(b.text for b in response.content if b.type == "text")
+
+            messages.append({"role": "assistant", "content": response.content})
+            results = []
+            for block in response.content:
+                if block.type != "tool_use":
+                    continue
+                try:
+                    out = self.dispatch(block.name, block.input)
+                    results.append(
+                        {
+                            "type": "tool_result",
+                            "tool_use_id": block.id,
+                            "content": _result_json(out),
+                        }
+                    )
+                except (PermissionError, KeyError, ValueError) as e:
+                    # Expected tool-level errors (least-privilege rejections, bad
+                    # zone/role) go back to the model so it can self-correct.
+                    # Infra failures (HA down) propagate and crash the tick.
+                    results.append(
+                        {
+                            "type": "tool_result",
+                            "tool_use_id": block.id,
+                            "content": f"{type(e).__name__}: {e}",
+                            "is_error": True,
+                        }
+                    )
+            messages.append({"role": "user", "content": results})
+
+        raise RuntimeError(f"gardener exceeded {MAX_TURNS} turns in one pass")
+
+
+def _result_json(value) -> str:
+    """Serialize a GardenerTools return (dataclass, list of dataclasses, or
+    None) into tool_result content."""
+    if value is None:
+        return "ok"
+    if is_dataclass(value):
+        value = asdict(value)
+    elif isinstance(value, list):
+        value = [asdict(v) if is_dataclass(v) else v for v in value]
+    return json.dumps(value, default=str)
 
 
 def journal_sink_factory(path: str):

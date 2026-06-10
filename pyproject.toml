@@ -5,7 +5,7 @@ description = "An AI-tended hydroponic garden — reusable domain logic for a Cl
 requires-python = ">=3.11"
 dependencies = [
     "pyyaml>=6.0",
-    # anthropic added when the Gardener SDK loop is wired (agent.py)
+    "anthropic>=0.104",
 ]
 
 [project.optional-dependencies]
