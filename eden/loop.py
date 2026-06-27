@@ -44,7 +44,9 @@ def tick(zone: Zone, tools, profiles: dict, recent: list[Action], now: float) ->
     return applied
 
 
-def run_once(zones: dict[str, Zone], tools, profiles: dict, recent_by_zone: dict, now: float) -> None:
+def run_once(
+    zones: dict[str, Zone], tools, profiles: dict, recent_by_zone: dict, now: float
+) -> None:
     """Tick every zone once. The Gardener calls this on its slow cadence (cron /
     interval). Fast life-critical loops are NOT here — they're in the reflex tier."""
     for zone in zones.values():

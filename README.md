@@ -92,10 +92,14 @@ tests/                pure-function plan() tests + loop-over-StubHA tests
 
 ## Run
 
+Tooling is [uv](https://docs.astral.sh/uv/) + [ruff](https://docs.astral.sh/ruff/).
+
 ```
-pip install -e ".[dev]"
-pytest                 # no HA needed (StubHA)
-python -m eden         # one pass over all zones (needs instance/.env)
+uv sync                # create .venv, install deps + dev tools (pinned by uv.lock)
+uv run pytest          # no HA needed (StubHA)
+uv run ruff check      # lint
+uv run ruff format     # format
+uv run python -m eden  # one pass over all zones (needs instance/.env)
 ```
 
 ## Deliberately NOT built (YAGNI — add when a 2nd method/zone is real)
