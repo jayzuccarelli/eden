@@ -11,10 +11,10 @@ Nothing here knows about Jay's specific garden — that lives in instance/ as YA
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from enum import Enum
-
+from enum import StrEnum
 
 # --- value objects the Gardener tools pass around -------------------------------
+
 
 @dataclass
 class Reading:
@@ -35,9 +35,9 @@ class Sample:
     ts: float
 
 
-class ActOp(str, Enum):
-    PULSE = "pulse"   # run for duration_s then stop (dosing pump)
-    SET = "set"       # set a level 0..1 (light brightness)
+class ActOp(StrEnum):
+    PULSE = "pulse"  # run for duration_s then stop (dosing pump)
+    SET = "set"  # set a level 0..1 (light brightness)
     ON = "on"
     OFF = "off"
 
@@ -50,7 +50,7 @@ class Action:
 
     role: str
     op: ActOp
-    value: float | None = None       # for SET (0..1)
+    value: float | None = None  # for SET (0..1)
     duration_s: float | None = None  # for PULSE
     reason: str = ""
 
@@ -58,14 +58,15 @@ class Action:
 @dataclass
 class ActuationResult:
     ok: bool
-    applied: dict          # what was actually sent after clamping
+    applied: dict  # what was actually sent after clamping
     clamped: bool = False
     reason: str = ""
 
 
 # --- the domain entities (config-driven; instantiated from instance/ YAML) ------
 
-class Scope(str, Enum):
+
+class Scope(StrEnum):
     """Where a Resource physically lives. v1 is all ZONE. SHARED is the seam that
     lets a future single nutrient tank / shelf light / air pump feed N zones
     without re-plumbing actuate() — see README one-way door #2."""
@@ -84,10 +85,10 @@ class Resource:
     by exactly one zone, so it reads like plain per-zone hardware.
     """
 
-    id: str                     # e.g. "z1.ph_probe", later "tank.nutrient_pump"
-    role: str                   # semantic handle: "ph", "ph_down_dose", "light"
-    kind: str                   # "sensor" | "actuator"
-    entity_id: str              # HA entity, e.g. "sensor.eden_z1_ph"
+    id: str  # e.g. "z1.ph_probe", later "tank.nutrient_pump"
+    role: str  # semantic handle: "ph", "ph_down_dose", "light"
+    kind: str  # "sensor" | "actuator"
+    entity_id: str  # HA entity, e.g. "sensor.eden_z1_ph"
     unit: str = ""
     scope: Scope = Scope.ZONE
     caps: dict = field(default_factory=dict)  # actuator hints (NON-authoritative;
@@ -110,10 +111,10 @@ class PlantProfile:
     """Targets-as-data for one species at one growth stage. A diverse plant or a
     stage transition is new DATA, never code. Keyed and shared across zones."""
 
-    id: str                  # "basil_genovese"
+    id: str  # "basil_genovese"
     species: str
-    stage: str               # "vegetative" | "flowering" | ...
-    bands: dict[str, Band]   # {"ph": Band(6.0,5.8,6.2), "water_temp": Band(...)}
+    stage: str  # "vegetative" | "flowering" | ...
+    bands: dict[str, Band]  # {"ph": Band(6.0,5.8,6.2), "water_temp": Band(...)}
     light_hours: float = 0.0
     light_brightness: float = 0.0  # 0..1 setpoint when on
 
@@ -128,10 +129,10 @@ class Zone:
     sensors fall out for free — v1 lists are length 1.
     """
 
-    id: str                              # "z1"
+    id: str  # "z1"
     display_name: str
-    method: str                          # grow-method key: "dwc"
-    profile_id: str                      # -> PlantProfile
+    method: str  # grow-method key: "dwc"
+    profile_id: str  # -> PlantProfile
     resources: dict[str, list[Resource]] = field(default_factory=dict)
     enabled: bool = True
 

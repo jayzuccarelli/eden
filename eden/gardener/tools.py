@@ -20,7 +20,7 @@ touch the always-on air pump.
 
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from eden.schema import Action, ActOp, ActuationResult, Reading, Sample, Scope, Zone
 
@@ -55,7 +55,7 @@ class GardenerTools:
     def history(self, zone_id: str, role: str, hours: float = 24.0) -> list[Sample]:
         """Trend for diagnosis ('has pH crept up?'). Read-only."""
         res = self._sensor(zone_id, role)
-        since = (datetime.now(timezone.utc) - timedelta(hours=hours)).isoformat()
+        since = (datetime.now(UTC) - timedelta(hours=hours)).isoformat()
         out = []
         for pt in self.ha.history(res.entity_id, since):
             try:
@@ -109,9 +109,7 @@ class GardenerTools:
         """Escalate to Jay. v1 routes via HA mobile notify; Voice voice later
         (output channel, not architecture)."""
         self.ha.call("notify", "notify", {"message": f"[eden/{zone_id}/{severity}] {text}"})
-        self.journal_sink(
-            {"kind": "alert", "zone": zone_id, "severity": severity, "text": text}
-        )
+        self.journal_sink({"kind": "alert", "zone": zone_id, "severity": severity, "text": text})
 
     # --- resolution (role -> resource -> entity); least-privilege guards --------
 
@@ -141,7 +139,11 @@ def _to_service(entity_id: str, action: Action) -> tuple[str, str, dict]:
         # is advisory — the ESPHome dose switch has its own safety auto-off.
         return domain, "turn_on", {"entity_id": entity_id}
     if action.op == ActOp.SET:
-        return "light", "turn_on", {"entity_id": entity_id, "brightness_pct": int((action.value or 0) * 100)}
+        return (
+            "light",
+            "turn_on",
+            {"entity_id": entity_id, "brightness_pct": int((action.value or 0) * 100)},
+        )
     if action.op == ActOp.ON:
         return domain, "turn_on", {"entity_id": entity_id}
     return domain, "turn_off", {"entity_id": entity_id}

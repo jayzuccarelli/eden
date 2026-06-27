@@ -132,7 +132,9 @@ class Gardener:
             )
             return self.tools.actuate(args["zone_id"], args["role"], action)
         if name == "set_state":
-            return self.tools.set_state(args["zone_id"], args["key"], args["value"], args.get("reason", ""))
+            return self.tools.set_state(
+                args["zone_id"], args["key"], args["value"], args.get("reason", "")
+            )
         if name == "journal":
             return self.tools.journal(args["zone_id"], args["text"], args.get("structured"))
         if name == "alert":

@@ -47,8 +47,12 @@ def test_run_dispatches_tool_use_and_returns_final_text():
             SimpleNamespace(
                 stop_reason="tool_use",
                 content=[
-                    _block(type="tool_use", id="tu_1", name="read",
-                           input={"zone_id": "z1", "role": "ph"}),
+                    _block(
+                        type="tool_use",
+                        id="tu_1",
+                        name="read",
+                        input={"zone_id": "z1", "role": "ph"},
+                    ),
                 ],
             ),
             SimpleNamespace(
@@ -76,8 +80,12 @@ def test_tool_error_goes_back_as_is_error():
                 content=[
                     # ph is a sensor — actuating it must hit the least-privilege
                     # PermissionError and come back as is_error, not crash.
-                    _block(type="tool_use", id="tu_1", name="actuate",
-                           input={"zone_id": "z1", "role": "ph", "op": "on"}),
+                    _block(
+                        type="tool_use",
+                        id="tu_1",
+                        name="actuate",
+                        input={"zone_id": "z1", "role": "ph", "op": "on"},
+                    ),
                 ],
             ),
             SimpleNamespace(

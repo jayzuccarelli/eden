@@ -7,7 +7,7 @@ from eden.gardener.tools import GardenerTools
 from eden.ha import StubHA
 from eden.loop import tick
 from eden.methods.base import ReflexSpec
-from eden.schema import Action, ActOp, Band, PlantProfile, Resource, Scope, Zone
+from eden.schema import Action, ActOp, Band, PlantProfile, Resource, Zone
 
 PROFILE = PlantProfile("basil_genovese", "basil", "vegetative", {"ph": Band(6.0, 5.8, 6.2)})
 
@@ -20,32 +20,42 @@ def _zone():
         profile_id="basil_genovese",
         resources={
             "ph": [Resource("z1.ph", "ph", "sensor", "sensor.eden_z1_ph", "pH")],
-            "water_temp": [Resource("z1.wt", "water_temp", "sensor", "sensor.eden_z1_water_temp", "C")],
-            "ph_down_dose": [Resource("z1.dose", "ph_down_dose", "actuator", "switch.eden_z1_ph_down_dose")],
+            "water_temp": [
+                Resource("z1.wt", "water_temp", "sensor", "sensor.eden_z1_water_temp", "C")
+            ],
+            "ph_down_dose": [
+                Resource("z1.dose", "ph_down_dose", "actuator", "switch.eden_z1_ph_down_dose")
+            ],
             "light": [Resource("z1.light", "light", "actuator", "light.eden_z1_grow_light")],
         },
     )
 
 
 def _tools(ha):
-    return GardenerTools({"z1": _zone()}, ha, journal_sink=lambda r: None, profiles={"basil_genovese": PROFILE})
+    return GardenerTools(
+        {"z1": _zone()}, ha, journal_sink=lambda r: None, profiles={"basil_genovese": PROFILE}
+    )
 
 
 def test_out_of_band_ph_triggers_dose_service():
-    ha = StubHA(states={
-        "sensor.eden_z1_ph": {"state": "6.5", "last_updated": ""},
-        "sensor.eden_z1_water_temp": {"state": "21", "last_updated": ""},
-    })
+    ha = StubHA(
+        states={
+            "sensor.eden_z1_ph": {"state": "6.5", "last_updated": ""},
+            "sensor.eden_z1_water_temp": {"state": "21", "last_updated": ""},
+        }
+    )
     tools = _tools(ha)
     tick(_zone(), tools, {"basil_genovese": PROFILE}, recent=[], now=0.0)
-    assert any(c[1] == "turn_on" and c[2]["entity_id"] == "switch.eden_z1_ph_down_dose" for c in ha.calls)
+    assert any(
+        c[1] == "turn_on" and c[2]["entity_id"] == "switch.eden_z1_ph_down_dose" for c in ha.calls
+    )
 
 
 def test_actuate_rejects_sensor_role():
     tools = _tools(StubHA())
     try:
         tools.actuate("z1", "ph", Action(role="ph", op=ActOp.ON))
-        assert False, "should reject a sensor role"
+        raise AssertionError("should reject a sensor role")
     except PermissionError:
         pass
 

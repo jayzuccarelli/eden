@@ -32,10 +32,10 @@ from eden.schema import Action, PlantProfile, Reading
 @runtime_checkable
 class GrowMethod(Protocol):
     # AGENT-tier contract -------------------------------------------------------
-    key: str                      # "dwc" | "aeroponic" | "nft"
-    required_sensors: set[str]    # roles the method reads, e.g. {"ph","water_temp"}
+    key: str  # "dwc" | "aeroponic" | "nft"
+    required_sensors: set[str]  # roles the method reads, e.g. {"ph","water_temp"}
     required_actuators: set[str]  # roles it drives, e.g. {"ph_down_dose","light"}
-    tick_interval_s: int          # how often the AGENT reasons (DWC ~minutes)
+    tick_interval_s: int  # how often the AGENT reasons (DWC ~minutes)
 
     def plan(
         self,
@@ -50,7 +50,7 @@ class GrowMethod(Protocol):
         ...
 
     # SAFETY-tier contract ------------------------------------------------------
-    def reflex_spec(self) -> "ReflexSpec":
+    def reflex_spec(self) -> ReflexSpec:
         """Declare what MUST run in the reflex layer (ESPHome/HA) for this method
         to be safe when the agent is offline. The garden survives a dead agent
         because THIS runs in firmware/HA, never in plan(). Implemented once per
@@ -68,7 +68,7 @@ class ReflexSpec:
     reflex/*.yaml (HA blueprint) once per method. Naming it here is what stops a
     new fast method from relitigating the agent/reflex boundary."""
 
-    dose_caps: dict = field(default_factory=dict)      # role -> {max_pulse_s, min_interval_s}
-    schedules: dict = field(default_factory=dict)      # role -> {on_hours, ...}
-    duty_cycles: dict = field(default_factory=dict)    # role -> {on_s, off_s}  (aero mist)
-    alerts: list = field(default_factory=list)         # e.g. ["air_pump_ok"]
+    dose_caps: dict = field(default_factory=dict)  # role -> {max_pulse_s, min_interval_s}
+    schedules: dict = field(default_factory=dict)  # role -> {on_hours, ...}
+    duty_cycles: dict = field(default_factory=dict)  # role -> {on_s, off_s}  (aero mist)
+    alerts: list = field(default_factory=list)  # e.g. ["air_pump_ok"]
