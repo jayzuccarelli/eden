@@ -35,7 +35,7 @@ class DWCMethod:
 
         ph = readings.get("ph")
         ph_band = profile.bands["ph"]
-        if ph and not ph.stale and ph.value > ph_band.hi:
+        if ph and not ph.stale and ph.value > ph_band.hi:  # noqa: SIM102 — keep the guard comment separate
             # Dead-time guard: skip if we dosed within the refractory window — the
             # last dose may not have registered yet (overshoot prevention).
             if not self._dosed_recently(recent_actions, "ph_down_dose", now):
