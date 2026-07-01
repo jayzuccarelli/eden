@@ -7,3 +7,8 @@ journal.jsonl
 .pytest_cache/
 .venv/
 .ruff_cache/
+
+# ESPHome — WiFi creds + build artifacts, never commit
+esphome/secrets.yaml
+esphome/.esphome/
+esphome/*.bin
