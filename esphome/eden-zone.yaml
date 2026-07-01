@@ -54,7 +54,7 @@ sensor:
   - platform: ads1115
     multiplexer: A0_GND
     gain: 4.096
-    name: "eden ${zone} pH raw"
+    name: "pH raw"
     id: eden_${zone}_ph_raw
     internal: true
     update_interval: 10s
@@ -66,13 +66,13 @@ sensor:
 
   - platform: copy           # the published role sensor: sensor.eden_<zone>_ph
     source_id: eden_${zone}_ph_raw
-    name: "eden ${zone} ph"
+    name: "ph"
     id: eden_${zone}_ph
     unit_of_measurement: pH
     accuracy_decimals: 2
 
   - platform: dallas_temp
-    name: "eden ${zone} water temp"
+    name: "water temp"
     id: eden_${zone}_water_temp
     unit_of_measurement: "°C"
     update_interval: 30s
@@ -81,7 +81,7 @@ binary_sensor:
   # Air-pump health (reflex/alert only — never an agent actuator). Wire a power-
   # monitoring plug or current sensor; placeholder template here.
   - platform: template
-    name: "eden ${zone} air pump ok"
+    name: "air pump ok"
     id: eden_${zone}_air_pump_ok
 
 switch:
@@ -89,7 +89,7 @@ switch:
   # agent calls turn_on; the firmware turns it off — the dose can never run long.
   - platform: gpio
     pin: ${dose_pin}
-    name: "eden ${zone} ph down dose"
+    name: "ph down dose"
     id: eden_${zone}_ph_down_dose
     on_turn_on:
       - delay: ${dose_cap_s}
@@ -99,7 +99,7 @@ light:
   # Grow light: dimmable, agent sets brightness; firmware owns the photoperiod.
   - platform: monochromatic
     output: eden_${zone}_light_pwm
-    name: "eden ${zone} grow light"
+    name: "grow light"
     id: eden_${zone}_grow_light
 
 output:
