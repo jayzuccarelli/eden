@@ -40,7 +40,7 @@ class Config:
     ha_url: str = os.environ.get("EDEN_HA_URL", "http://localhost:8123")
     ha_token: str = os.environ.get("EDEN_HA_TOKEN", "")
     instance_dir: str = os.environ.get("EDEN_INSTANCE", os.path.join(_repo_root, "instance"))
-    gardener_model: str = os.environ.get("EDEN_MODEL", "claude-sonnet-4-6")
+    gardener_model: str = os.environ.get("EDEN_MODEL", "claude-sonnet-5")
     journal_path: str = os.environ.get("EDEN_JOURNAL", "journal.jsonl")
     # Agent reasoning cadence (separate from method.tick_interval_s and from the
     # reflex tick). Two-way door: a cron/interval calls run_once this often.

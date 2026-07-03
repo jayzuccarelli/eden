@@ -37,7 +37,7 @@ def _gardener(responses):
     )
     journal = []
     tools = GardenerTools(zones, ha, journal.append, profiles)
-    g = Gardener(tools, "claude-sonnet-4-6", "test prompt", client=FakeClient(responses))
+    g = Gardener(tools, "claude-sonnet-5", "test prompt", client=FakeClient(responses))
     return g, ha, journal
 
 
