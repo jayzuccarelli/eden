@@ -2,9 +2,9 @@
 harness yet — that's a two-way door for when saccade is eval-proven). It owns the
 system prompt + the function-calling dispatch onto GardenerTools.
 
-v1 is a STUB of the model loop on purpose — the directive scaffolds the
-structure/interface-defining files; the control logic that matters
-(schema/methods/tools/loop) is real. Wiring a specific SDK call is a fill-in.
+run() is a manual agentic loop (not the SDK tool runner) on purpose: every
+hardware-touching call must route through dispatch(), the audit + least-privilege
+chokepoint. Uses adaptive thinking; the model id comes from config (EDEN_MODEL).
 
 The tool SCHEMAS below are the frozen contract Voice (the GPT Realtime voice
 gateway) binds to when it calls the Gardener as a subagent: least-privilege, five
