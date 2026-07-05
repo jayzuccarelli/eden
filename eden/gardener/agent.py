@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import asdict, is_dataclass
+from typing import Any
 
 from eden.gardener.tools import GardenerTools
 
@@ -151,7 +152,7 @@ class Gardener:
 
             self.client = anthropic.Anthropic()
 
-        messages = [{"role": "user", "content": instruction}]
+        messages: list[dict[str, Any]] = [{"role": "user", "content": instruction}]
         for _ in range(MAX_TURNS):
             response = self.client.messages.create(
                 model=self.model,
@@ -201,15 +202,15 @@ class Gardener:
         raise RuntimeError(f"gardener exceeded {MAX_TURNS} turns in one pass")
 
 
-def _result_json(value) -> str:
+def _result_json(value: object) -> str:
     """Serialize a GardenerTools return (dataclass, list of dataclasses, or
     None) into tool_result content."""
     if value is None:
         return "ok"
-    if is_dataclass(value):
+    if is_dataclass(value) and not isinstance(value, type):
         value = asdict(value)
     elif isinstance(value, list):
-        value = [asdict(v) if is_dataclass(v) else v for v in value]
+        value = [asdict(v) if is_dataclass(v) and not isinstance(v, type) else v for v in value]
     return json.dumps(value, default=str)
 
 

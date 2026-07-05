@@ -1,5 +1,7 @@
 # Eden
 
+[![check](https://github.com/jayzuccarelli/eden/actions/workflows/ci.yml/badge.svg)](https://github.com/jayzuccarelli/eden/actions/workflows/ci.yml)
+
 An AI-tended hydroponic garden. A Claude "Gardener" agent autonomously tends a
 living grow system through Home Assistant. The point is the agentic AI-keeper
 story, not the vegetables.
