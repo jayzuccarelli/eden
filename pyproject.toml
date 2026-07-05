@@ -12,6 +12,8 @@ dependencies = [
 dev = [
     "pytest>=8.0",
     "ruff>=0.12",
+    "mypy>=1.11",
+    "types-PyYAML>=6.0",
 ]
 
 [build-system]
@@ -28,3 +30,11 @@ target-version = "py311"
 [tool.ruff.lint]
 # pyflakes/pycodestyle errors, isort, pyupgrade, bugbear, flake8-simplify
 select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+# Pragmatic gate, not --strict: default checks already catch real type bugs.
+# The codebase is fully return-annotated; strict def-typing would only force
+# churn on structurally-typed `tools` params for no correctness gain.
+python_version = "3.11"
+warn_unused_ignores = true
+warn_redundant_casts = true

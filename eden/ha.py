@@ -40,7 +40,7 @@ class HA:
 
     def history(self, entity_id: str, since_iso: str) -> list[dict]:
         out = self._req(f"/api/history/period/{since_iso}?filter_entity_id={entity_id}")
-        return out[0] if out else []  # type: ignore[index]
+        return out[0] if out else []
 
     def call(self, domain: str, service: str, data: dict) -> None:
         """POST /api/services/<domain>/<service>. Used for actuator commands AND
