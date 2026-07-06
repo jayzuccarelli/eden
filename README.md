@@ -79,7 +79,7 @@ eden/                 reusable domain logic (the future framework)
     __init__.py       make_method() if/elif (saccade make_backend pattern)
   gardener/
     tools.py          the 5-verb (+history) tool surface; least-privilege in code
-    agent.py          Sonnet-class agent: TOOL_SCHEMAS + dispatch (SDK loop stubbed)
+    agent.py          Sonnet-class agent: TOOL_SCHEMAS + the manual tool-use loop
 instance/             personal config = future "Hortus" (data only, no logic)
   zones.yaml          the single z1 block: role -> resource -> entity_id + caps
   profiles/*.yaml     plant targets-as-data
@@ -103,6 +103,13 @@ uv run ruff check      # lint
 uv run ruff format     # format
 uv run python -m eden  # one pass over all zones (needs instance/.env)
 ```
+
+## Build the physical garden
+
+Eden runs on a free compute base (a box with Home Assistant + a Claude API key)
+plus off-the-shelf hydroponic hardware. **[docs/hardware.md](docs/hardware.md)** is
+the full bill of materials — every part, where to buy it, the verified XIAO
+ESP32-S3 pinout, and the germination steps to go from empty bucket to basil.
 
 ## Deliberately NOT built (YAGNI — add when a 2nd method/zone is real)
 
