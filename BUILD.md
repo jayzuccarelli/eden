@@ -79,7 +79,7 @@ so the chip can sit in the breadboard and connect to wires.
 `5V`...) are printed on the **back** of the XIAO. Flip it over to read them. Keep
 a photo on your phone so you don't keep flipping it.
 
-**A3. Flash the firmware.** Plug the XIAO into the build host with a USB-C cable and run:
+**A3. Flash the firmware.** Plug the XIAO into your computer with a USB-C cable and run:
 
 ```
 esphome run ~/projects/eden/esphome/eden-z1.yaml

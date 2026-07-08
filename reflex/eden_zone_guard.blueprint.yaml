@@ -1,11 +1,10 @@
 # Reflex-tier pH guard, as an HA BLUEPRINT (not a per-zone forked automation).
 # Zone 2's guard = instantiate this with z2 inputs, NOT a copy-pasted automation
-# (the fork-per-zone failure mode the directive forbids; verified ha-config already
-# has blueprints/automation/).
+# (the fork-per-zone failure mode).
 #
-# CANONICAL HOME: this lives in the ha-config repo (where HA actually loads it). Eden
-# does not mirror it — this file is the source that gets placed into
-# ha-config/homeassistant/blueprints/automation/eden/. The reflex band is read from
+# CANONICAL HOME: your HA config (where HA actually loads it). Eden does not
+# mirror it — this file is the source that gets placed into your HA config's
+# blueprints/automation/eden/. The reflex band is read from
 # input_number helpers the Gardener writes via set_state(), so the agent->reflex
 # setpoint handoff is REAL HA state the automation can see (one-way door #1).
 

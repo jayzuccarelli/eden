@@ -18,8 +18,8 @@ right structure.*
    offline.** Sole authority for hard caps.
 2. **Gardener** — a plain Sonnet-class agent (`eden/gardener/`) with tools scoped
    ONLY to the garden. Reads sensor history, sets policy/dosing, journals, alerts.
-   Voice (GPT Realtime voice) can call it as a subagent and inherits exactly
-   its five-verb surface — least privilege.
+   A realtime voice agent can call it as a subagent and inherits exactly its
+   five-verb surface — least privilege.
 
 The agent is never in a fast/life-critical loop. Mist-style sub-minute cycles
 (future aeroponics) live in the reflex tier, declared by `GrowMethod.reflex_spec()`.
@@ -58,12 +58,12 @@ The agent is never in a fast/life-critical loop. Mist-style sub-minute cycles
    `instance/` is YAML + prompt + secrets (the future "Hortus"). Extraction =
    rename a directory, `pip install eden`. No code moves.
 
-## Reflex automations live in ha-config (single source of truth)
+## Reflex automations live in your HA config (single source of truth)
 
 The per-zone guard is an **HA blueprint** (`reflex/eden_zone_guard.blueprint.yaml`),
-deployed into `ha-config/homeassistant/blueprints/automation/eden/`. Zone 2's guard is
-a blueprint *instantiation*, not a forked automation. Eden does not keep a drifting
-mirror — ha-config is where HA loads it.
+deployed into your Home Assistant config under `blueprints/automation/eden/`. Zone 2's
+guard is a blueprint *instantiation*, not a forked automation. Eden does not keep a
+drifting mirror — the HA config is where HA loads it.
 
 ## Layout
 
