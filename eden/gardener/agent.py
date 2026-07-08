@@ -6,9 +6,9 @@ run() is a manual agentic loop (not the SDK tool runner) on purpose: every
 hardware-touching call must route through dispatch(), the audit + least-privilege
 chokepoint. Uses adaptive thinking; the model id comes from config (EDEN_MODEL).
 
-The tool SCHEMAS below are the frozen contract Voice (the GPT Realtime voice
-gateway) binds to when it calls the Gardener as a subagent: least-privilege, five
-verbs, (zone, role) addressed.
+The tool SCHEMAS below are the frozen contract a realtime voice gateway binds to
+when it calls the Gardener as a subagent: least-privilege, five verbs,
+(zone, role) addressed.
 """
 
 from __future__ import annotations

@@ -1,7 +1,7 @@
 """The Gardener's tool surface — the agent's ENTIRE vocabulary, and the hardest
-one-way door (it binds the prompt, learned behavior, and the Voice subagent
-contract). FIVE generic verbs over a (zone_id, role) address space. The agent
-NEVER sees a tool named dose_ph_down() and NEVER sees an entity_id.
+one-way door (it binds the prompt, learned behavior, and the voice-gateway
+subagent contract). FIVE generic verbs over a (zone_id, role) address space. The
+agent NEVER sees a tool named dose_ph_down() and NEVER sees an entity_id.
 
 Why five, not the candidates' six:
   - DROPPED list_zones/describe_zone: runtime discovery for N=1 is YAGNI; the
@@ -106,7 +106,7 @@ class GardenerTools:
         )
 
     def alert(self, zone_id: str, severity: str, text: str) -> None:
-        """Escalate to Jay. v1 routes via HA mobile notify; Voice voice later
+        """Escalate to the human. v1 routes via HA mobile notify; voice later
         (output channel, not architecture)."""
         self.ha.call("notify", "notify", {"message": f"[eden/{zone_id}/{severity}] {text}"})
         self.journal_sink({"kind": "alert", "zone": zone_id, "severity": severity, "text": text})
