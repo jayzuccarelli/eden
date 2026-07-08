@@ -1,9 +1,5 @@
 # CLAUDE.md
 
-
-
-- Put `Fixes an internal ref` in the PR description or a commit message — merging then auto-closes the issue.
-
 ## Tooling
 
 Python is managed with **uv** and linted/formatted with **ruff** — use them, not `pip`/`black`/`flake8`.
