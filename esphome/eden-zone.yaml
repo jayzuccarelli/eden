@@ -1,5 +1,5 @@
-# Eden reflex-tier firmware — the multi-zone-READY ESPHome template for the XIAO
-# ESP32-S3. A second bucket is a second NODE that includes this with zone: z2 —
+# Eden reflex-tier firmware: the multi-zone-READY ESPHome template for the XIAO
+# ESP32-S3. A second bucket is a second NODE that includes this with zone: z2 :
 # every entity is prefixed eden_<zone>_<role>, so zones can never collide and HA
 # history is never re-keyed (one-way door #5).
 #
@@ -19,7 +19,7 @@ substitutions:
   ds18b20_pin: GPIO3    # D2
   dose_pin: GPIO1       # D0 -> pH-Down pump MOSFET
   light_pin: GPIO2      # D1 -> grow-light MOSFET (PWM)
-  dose_cap_s: "2s"      # HARD safety cap — the agent cannot exceed this
+  dose_cap_s: "2s"      # HARD safety cap, the agent cannot exceed this
   light_on_hours: "14"
 
 esphome:
@@ -59,7 +59,7 @@ sensor:
     internal: true
     update_interval: 10s
     filters:
-      # Two-point calibration — fill after cal (two-way door, device data).
+      # Two-point calibration: fill after cal (two-way door, device data).
       - calibrate_linear:
           - 0.0 -> 0.0
           - 3.0 -> 14.0
@@ -78,7 +78,7 @@ sensor:
     update_interval: 30s
 
 binary_sensor:
-  # Air-pump health (reflex/alert only — never an agent actuator). Wire a power-
+  # Air-pump health (reflex/alert only: never an agent actuator). Wire a power-
   # monitoring plug or current sensor; placeholder template here.
   - platform: template
     name: "air pump ok"
@@ -86,7 +86,7 @@ binary_sensor:
 
 switch:
   # pH-Down dosing pump. HARD auto-off after ${dose_cap_s} is the reflex cap: the
-  # agent calls turn_on; the firmware turns it off — the dose can never run long.
+  # agent calls turn_on; the firmware turns it off: the dose can never run long.
   - platform: gpio
     pin: ${dose_pin}
     name: "ph down dose"

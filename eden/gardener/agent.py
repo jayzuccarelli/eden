@@ -1,5 +1,5 @@
 """The Gardener: a plain Sonnet-class agent (NOT on the saccade glance->focus
-harness yet — that's a two-way door for when saccade is eval-proven). It owns the
+harness yet, that's a two-way door for when saccade is eval-proven). It owns the
 system prompt + the function-calling dispatch onto GardenerTools.
 
 run() is a manual agentic loop (not the SDK tool runner) on purpose: every
@@ -21,7 +21,7 @@ from eden.gardener.tools import GardenerTools
 
 # Runaway guard: one tending pass should be a handful of reads + at most a couple
 # of actuations. If the model is still calling tools after this many turns,
-# something is wrong — crash the tick loudly rather than burn tokens.
+# something is wrong: crash the tick loudly rather than burn tokens.
 MAX_TURNS = 25
 
 TOOL_SCHEMAS = [
@@ -93,7 +93,7 @@ TOOL_SCHEMAS = [
     },
     {
         "name": "alert",
-        "description": "Escalate to Jay (severity: info|warn|critical).",
+        "description": "Escalate to the operator (severity: info|warn|critical).",
         "input_schema": {
             "type": "object",
             "properties": {
@@ -145,7 +145,7 @@ class Gardener:
     def run(self, instruction: str) -> str:
         """One agentic tending pass: messages + TOOL_SCHEMAS, dispatch each
         tool_use through the audit chokepoint, feed results back, return the
-        final text. Manual loop (not the SDK tool runner) on purpose — every
+        final text. Manual loop (not the SDK tool runner) on purpose, every
         hardware-touching call must route through dispatch()."""
         if self.client is None:
             import anthropic

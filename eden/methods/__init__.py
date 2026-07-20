@@ -1,5 +1,5 @@
 """Grow-method selection: a hand-written if/elif, exactly like saccade's
-make_backend in __main__.py. No registry, no entry-points — that's YAGNI at one
+make_backend in __main__.py. No registry, no entry-points, that's YAGNI at one
 method. Adding aeroponic/nft = one import + one branch here.
 """
 

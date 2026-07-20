@@ -1,8 +1,8 @@
-"""Thin Home Assistant client — the ONLY coupling to HA. Bearer token + REST,
+"""Thin Home Assistant client, the ONLY coupling to HA. Bearer token + REST,
 the exact pattern proven in saccade/speakers/home_assistant.py (POST
 /api/services/<domain>/<service>, GET /api/states/<entity_id>).
 
-One real impl (HA is always HA — no provider-swap axis, so no ABC), plus a
+One real impl (HA is always HA, no provider-swap axis, so no ABC), plus a
 StubHA for tests so the loop and tools run without a live HA. REST/get-states is
 the v1 transport; swap to websocket later behind the same two methods if polling
 proves insufficient (two-way door).

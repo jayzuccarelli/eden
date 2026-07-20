@@ -31,9 +31,9 @@ def main() -> None:
     # Deterministic reflex-tier policy pass (runs without the model).
     run_once(zones, tools, profiles, recent_by_zone={}, now=now())
 
-    print(f"eden — zones={list(zones)} model={c.gardener_model}")
+    print(f"eden, zones={list(zones)} model={c.gardener_model}")
     if not os.environ.get("ANTHROPIC_API_KEY"):
-        print("ANTHROPIC_API_KEY not set — skipping the agentic pass")
+        print("ANTHROPIC_API_KEY not set, skipping the agentic pass")
         return
 
     with open(os.path.join(c.instance_dir, "prompt.md")) as f:
