@@ -1,4 +1,4 @@
-"""The Gardener's tool surface — the agent's ENTIRE vocabulary, and the hardest
+"""The Gardener's tool surface, the agent's ENTIRE vocabulary, and the hardest
 one-way door (it binds the prompt, learned behavior, and the voice-gateway
 subagent contract). FIVE generic verbs over a (zone_id, role) address space. The
 agent NEVER sees a tool named dose_ph_down() and NEVER sees an entity_id.
@@ -8,11 +8,11 @@ Why five, not the candidates' six:
     prompt states the one zone. Add them (read-only, additive => two-way door)
     when there's genuinely more than one zone to discover.
   - KEPT set_state as a SECOND write path. The frozen invariant is NOT "one write
-    verb" — it's "only ONE write path reaches a physical actuator." Stage
+    verb", it's "only ONE write path reaches a physical actuator." Stage
     transitions, band retunes, enable/disable are legit agent writes that must
     NOT route through the reflex actuator cap.
 
-Adding hardware / plants / methods adds DATA these tools already accept — never a
+Adding hardware / plants / methods adds DATA these tools already accept, never a
 new tool. Least-privilege is enforced in CODE here (not in the prompt): actuate()
 rejects any role that isn't a registered actuator, so the agent literally cannot
 touch the always-on air pump.
@@ -126,7 +126,7 @@ class GardenerTools:
         if res.scope == Scope.SHARED:
             # A shared actuator (future nutrient tank pump feeding N zones) needs
             # write coordination so two zones don't double-dose. v1 has none; this
-            # is where a serialize/merge step slots in — addressing is by res.id.
+            # is where a serialize/merge step slots in: addressing is by res.id.
             pass
         return res
 
@@ -136,7 +136,7 @@ def _to_service(entity_id: str, action: Action) -> tuple[str, str, dict]:
     domain = entity_id.split(".", 1)[0]
     if action.op == ActOp.PULSE:
         # The reflex layer auto-offs after its cap; we just turn on. Pulse duration
-        # is advisory — the ESPHome dose switch has its own safety auto-off.
+        # is advisory: the ESPHome dose switch has its own safety auto-off.
         return domain, "turn_on", {"entity_id": entity_id}
     if action.op == ActOp.SET:
         return (

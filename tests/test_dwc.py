@@ -1,4 +1,4 @@
-"""DWCMethod.plan() is a pure function — test it with no HA, no network, exactly
+"""DWCMethod.plan() is a pure function, test it with no HA, no network, exactly
 like saccade tests backends with stub.py. Proves the dead-time guard and the
 band logic without touching hardware."""
 

@@ -49,7 +49,7 @@ class Config:
 
 def load_instance(instance_dir: str) -> tuple[dict[str, Zone], dict[str, PlantProfile]]:
     """Parse instance/zones.yaml + instance/profiles/*.yaml into domain objects.
-    A flat dict + tiny resolution — NOT a relational registry (that's YAGNI for
+    A flat dict + tiny resolution, NOT a relational registry (that's YAGNI for
     one ~4-device zone). Split into more files / a DB later if it grows."""
     with open(os.path.join(instance_dir, "zones.yaml")) as f:
         raw = yaml.safe_load(f)
