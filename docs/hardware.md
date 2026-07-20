@@ -67,7 +67,7 @@ Match them exactly or change both the wiring and the firmware substitutions.
 |---|---|---|
 | I²C SDA | `GPIO5` (D4) | ADS1115 SDA |
 | I²C SCL | `GPIO6` (D5) | ADS1115 SCL |
-| pH analog in |, | pH signal board out → **ADS1115 A0** |
+| pH analog in | *(none)* | pH signal board out → **ADS1115 A0** |
 | Water temp (1-Wire) | `GPIO3` (D2) | DS18B20 data |
 | pH-Down pump | `GPIO1` (D0) | IRF520 gate → pump `−`, pump `+` to 12V |
 | Grow light (PWM) | `GPIO2` (D1) | IRF520 gate → LED strip `−`, strip `+` to 12V |
