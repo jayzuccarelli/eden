@@ -82,6 +82,10 @@ Notes:
 
 ## Safety: the reflex tier, in firmware (not the agent)
 
+This section is about protecting the *plant* from the software. For protecting
+*yourself* while building, mains near water and acid handling, see the Safety
+section at the top of [BUILD.md](../BUILD.md).
+
 The whole point of the two-tier design is that safety lives in firmware and holds
 even if the Gardener agent is offline or misbehaving:
 

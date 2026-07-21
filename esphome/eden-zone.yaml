@@ -1,5 +1,5 @@
 # Eden reflex-tier firmware: the multi-zone-READY ESPHome template for the XIAO
-# ESP32-S3. A second bucket is a second NODE that includes this with zone: z2 :
+# ESP32-S3. A second bucket is a second NODE that includes this with zone: z2.
 # every entity is prefixed eden_<zone>_<role>, so zones can never collide and HA
 # history is never re-keyed (one-way door #5).
 #

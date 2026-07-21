@@ -33,7 +33,7 @@ def main() -> None:
 
     print(f"eden, zones={list(zones)} model={c.gardener_model}")
     if not os.environ.get("ANTHROPIC_API_KEY"):
-        print("ANTHROPIC_API_KEY not set, skipping the agentic pass")
+        print("ANTHROPIC_API_KEY not set; skipping the agentic pass")
         return
 
     with open(os.path.join(c.instance_dir, "prompt.md")) as f:

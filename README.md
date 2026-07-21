@@ -29,7 +29,7 @@ The agent is never in a fast/life-critical loop. Mist-style sub-minute cycles
 1. **zone_id threaded through everything**, even at N=1. Entity ids, tool calls,
    history, setpoints, journal are all zone-scoped. Adding pot #2 = a config block.
 2. **Generic role-addressed tool API.** Five verbs (`read`, `actuate`,
-   `set_state`, `journal`, `alert`: plus `history`) over a `(zone, role)` space.
+   `set_state`, `journal`, `alert`, plus `history`) over a `(zone, role)` space.
    The agent never sees `dose_ph_down()` or an entity_id. New hardware/plants/
    methods add DATA the tools already accept, never a new tool. `actuate` is the
    ONLY path to a physical actuator; `set_state` handles non-physical state and
@@ -110,6 +110,10 @@ Eden runs on a free compute base (a box with Home Assistant + a Claude API key)
 plus off-the-shelf hydroponic hardware. **[docs/hardware.md](docs/hardware.md)** is
 the full bill of materials, every part, where to buy it, the verified XIAO
 ESP32-S3 pinout, and the germination steps to go from empty bucket to basil.
+
+**[BUILD.md](BUILD.md)** is the step-by-step assembly guide. Read its Safety
+section first: this build puts mains-powered equipment beside an open bucket of
+water and has you handle a corrosive liquid.
 
 ## Deliberately NOT built (YAGNI: add when a 2nd method/zone is real)
 
