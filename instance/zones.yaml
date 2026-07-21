@@ -8,7 +8,7 @@
 
 zones:
   - id: z1
-    display_name: "Eden Z1, Basil"
+    display_name: "Eden Z1 (Basil)"
     method: dwc
     profile_id: basil_genovese
     enabled: true

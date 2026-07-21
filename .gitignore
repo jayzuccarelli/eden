@@ -10,7 +10,7 @@ journal.jsonl
 .mypy_cache/
 .claude/
 
-# ESPHome — WiFi creds + build artifacts, never commit
+# ESPHome: WiFi creds + build artifacts, never commit
 esphome/secrets.yaml
 esphome/.esphome/
 esphome/*.bin

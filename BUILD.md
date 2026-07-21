@@ -9,13 +9,18 @@ ruin anything while learning.
 ## Safety, read this once before you start
 
 This build puts mains-powered equipment next to an open bucket of water, and has
-you handle a corrosive liquid. None of that is dangerous if you take four
-precautions, and all four are cheap.
+you handle a corrosive liquid. Neither risk goes away, but both are manageable,
+and the precautions that manage them are cheap.
 
 - **Plug anything mains-powered into a GFCI / RCD outlet.** That means the air
   pump and the grow light. If the outlet isn't protected, use a plug-in GFCI
   adapter. Water plus mains is the one failure mode in this build that hurts you
   rather than the plant.
+- **Put a check valve in the air line, or keep the pump above the water line.**
+  The pump sits beside the bucket, below the water. When it stops, water siphons
+  back down the hose into a mains-powered housing. A one-way check valve costs
+  about a dollar and blocks that path; mounting the pump higher than the water
+  does the same job for free.
 - **Leave a drip loop in every cable.** Let each cord hang below its outlet
   before rising to the plug, so water running down the cable drips on the floor
   instead of into the socket. Keep the 12V brick off the floor and away from the
@@ -23,9 +28,15 @@ precautions, and all four are cheap.
 - **Wear gloves and eye protection when handling pH-Down and nutrients.** pH-Down
   is an acid, typically phosphoric. Add acid to water, never water to acid, and
   never mix pH-Up and pH-Down directly. Store both in their original labelled
-  bottles, out of reach of children and pets.
-- **Solder somewhere ventilated**, and treat the iron as hot for several minutes
-  after you unplug it.
+  bottles, out of reach of children and pets. If it reaches skin, flush with
+  running water for about 15 minutes; if it reaches an eye, irrigate immediately
+  and get medical attention. Follow the safety data sheet on the bottle over
+  anything written here.
+- **Wire with the 12V brick unplugged.** Components C and D have you screwing
+  bare conductors into terminals. Do that with no power in the circuit, and plug
+  the brick in only when a step tells you to.
+- **Solder somewhere ventilated**, wear eye protection for it, and treat the iron
+  as hot for several minutes after you unplug it.
 
 The reflex tier caps what the *software* can do, including the dose caps in
 `esphome/`. It cannot protect you from wiring or chemistry. That part is on the
@@ -195,7 +206,10 @@ if the software goes haywire.
 
 - Nothing happens? 9 times out of 10 it's the **ground handshake** (C4 second
   bullet or C5).
-- Spins but *doesn't* stop at 2s? Stop and tell me, the safety cap isn't firing.
+- Spins but *doesn't* stop at 2s? Unplug the 12V brick and stop here: the
+  safety cap isn't firing, and the dose cap is the thing standing between a
+  stuck pump and a bucket of acid. Recheck the `max_duration` in `esphome/` and
+  reflash before going further. If it still won't cap, open an issue.
 
 **Set the pump module aside** (leave it wired).
 
@@ -233,8 +247,9 @@ also runs it on a schedule by itself, **on at 6:00, off at 20:00** (a 14-hour
 
 > Honest note: the brain speaks at 3.3V and these MOSFETs would prefer ~10V to
 > open fully. The tiny pump doesn't care. The light pulls more current, so touch
-> the silver block after a few minutes, if it's hot, tell me and we'll add one
-> cheap transistor to drive the gate harder. If it's just warm, fine.
+> the silver block after a few minutes. Warm is fine; too hot to keep a finger
+> on is not, so unplug the brick and add a cheap transistor to drive the gate
+> harder.
 
 **Set aside.**
 
@@ -309,7 +324,9 @@ water or its storage cap until the bucket's ready.)
 ## Component G: The Air Pump (dumb on purpose)
 
 **G1.** Push the air stone onto the air pump's hose. Drop the stone in the bucket
-(later, once there's water). Plug the air pump into the **wall** (a GFCI / RCD outlet, with a drip loop, see Safety). That's the whole
+(later, once there's water). Fit the check valve in the hose if you have one, arrow pointing toward the
+stone. Plug the air pump into the **wall** (a GFCI / RCD outlet, with a drip
+loop, see Safety). That's the whole
 job, it runs 24/7 and **never touches the brain or the software**. Constant
 bubbles = oxygen to the roots; we deliberately give the software no way to stop it.
 
@@ -318,16 +335,21 @@ bubbles = oxygen to the roots; we deliberately give the software no way to stop 
 ## Component H: The Bucket (final assembly, now we add water)
 
 **H1.** Rinse a couple handfuls of clay pebbles, put them in the mesh net-pot lid.
+
 **H2.** Fill the bucket with plain water to the line on the gauge.
+
 **H3.** Add nutrients (MaxiGro) per the label dose, stir.
+
 **H4.** Check pH with your now-calibrated probe. Basil likes ~5.5–6.5. If it's
 high, this is what the dosing pump is *for*, but for the first fill you can nudge
 it by hand with a few drops of pH-Down so the software starts from a good place.
 Gloves and eye protection for this step, and add the acid to the water rather
 than the other way round.
+
 **H5.** Settle the three things into the bucket: the **air stone** (bubbling), the
-**temperature probe**, and the **pH probe**: all dangling in the water, not
+**temperature probe**, and the **pH probe**, all dangling in the water, not
 touching the bottom.
+
 **H6.** Set the lid with the net pot on. Drop your rooted basil plug into the net
 pot so its roots reach down toward the water.
 
