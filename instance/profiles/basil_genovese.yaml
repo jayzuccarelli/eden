@@ -1,4 +1,4 @@
-# A PlantProfile is pure DATA — targets/bands for one species at one stage. A
+# A PlantProfile is pure DATA: targets/bands for one species at one stage. A
 # diverse plant or a stage transition is a new file / new values, never code.
 # Two zones can run different plants off the same engine by pointing at different
 # profiles. The reflex hard band lives as HA input_number helpers (set via

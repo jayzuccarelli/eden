@@ -5,7 +5,7 @@ tests run anywhere. These are the ONE-WAY-DOOR types: zone_id threads through
 everything, sensors/actuators are addressed by ROLE (not entity_id), hardware
 resolves to a RESOURCE that may be shared, and plant targets are pure DATA.
 
-Nothing here knows about Jay's specific garden — that lives in instance/ as YAML.
+Nothing here knows about any specific garden, that lives in instance/ as YAML.
 """
 
 from __future__ import annotations
@@ -45,7 +45,7 @@ class ActOp(StrEnum):
 @dataclass
 class Action:
     """A desired effect on ONE actuator role. GrowMethod.plan() returns these;
-    actuate() applies them. The reflex layer may CLAMP — clamped/applied report
+    actuate() applies them. The reflex layer may CLAMP, clamped/applied report
     what actually happened so the agent learns the real limits empirically."""
 
     role: str
@@ -69,7 +69,7 @@ class ActuationResult:
 class Scope(StrEnum):
     """Where a Resource physically lives. v1 is all ZONE. SHARED is the seam that
     lets a future single nutrient tank / shelf light / air pump feed N zones
-    without re-plumbing actuate() — see README one-way door #2."""
+    without re-plumbing actuate(), see README one-way door #2."""
 
     ZONE = "zone"
     SHARED = "shared"
@@ -92,7 +92,7 @@ class Resource:
     unit: str = ""
     scope: Scope = Scope.ZONE
     caps: dict = field(default_factory=dict)  # actuator hints (NON-authoritative;
-    #   the reflex layer is the sole authority — see one-way door #6). e.g.
+    #   the reflex layer is the sole authority: see one-way door #6). e.g.
     #   {"op": "pulse", "max_duration_s": 2.0, "min_interval_s": 600}
 
 
@@ -126,7 +126,7 @@ class Zone:
 
     resources is role -> [Resource]. It is a LIST per role (not a single
     Resource) so redundant probes (two pH sensors voting) and shared ambient
-    sensors fall out for free — v1 lists are length 1.
+    sensors fall out for free, v1 lists are length 1.
     """
 
     id: str  # "z1"

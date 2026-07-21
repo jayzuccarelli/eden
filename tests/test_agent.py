@@ -78,7 +78,7 @@ def test_tool_error_goes_back_as_is_error():
             SimpleNamespace(
                 stop_reason="tool_use",
                 content=[
-                    # ph is a sensor — actuating it must hit the least-privilege
+                    # ph is a sensor: actuating it must hit the least-privilege
                     # PermissionError and come back as is_error, not crash.
                     _block(
                         type="tool_use",

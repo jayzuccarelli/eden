@@ -3,7 +3,7 @@
 # (the fork-per-zone failure mode).
 #
 # CANONICAL HOME: your HA config (where HA actually loads it). Eden does not
-# mirror it — this file is the source that gets placed into your HA config's
+# mirror it: this file is the source that gets placed into your HA config's
 # blueprints/automation/eden/. The reflex band is read from
 # input_number helpers the Gardener writes via set_state(), so the agent->reflex
 # setpoint handoff is REAL HA state the automation can see (one-way door #1).
@@ -12,7 +12,7 @@ blueprint:
   name: Eden zone pH guard
   description: >
     Reflex dose when pH exceeds the zone's hi setpoint. Independent of the
-    Gardener — holds when the agent is offline. The ESPHome dose switch enforces
+    Gardener, holds when the agent is offline. The ESPHome dose switch enforces
     the hard pulse cap; this just triggers a capped pulse on threshold.
   domain: automation
   input:

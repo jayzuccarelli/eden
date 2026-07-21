@@ -1,7 +1,7 @@
 [project]
 name = "eden"
 version = "0.1.0"
-description = "An AI-tended hydroponic garden — reusable domain logic for a Claude Gardener agent over Home Assistant."
+description = "An AI-tended hydroponic garden, reusable domain logic for a Claude Gardener agent over Home Assistant."
 requires-python = ">=3.11"
 dependencies = [
     "pyyaml>=6.0",

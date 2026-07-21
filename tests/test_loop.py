@@ -1,4 +1,4 @@
-"""Loop + tools over a StubHA — no network. Proves: (1) the loop is method-
+"""Loop + tools over a StubHA, no network. Proves: (1) the loop is method-
 agnostic and drives the right HA service for an out-of-band reading, (2) actuate
 rejects sensor roles (least-privilege in code), (3) the method swap doesn't touch
 the loop (run a fake method through the same loop)."""
@@ -61,7 +61,7 @@ def test_actuate_rejects_sensor_role():
 
 
 def test_loop_is_method_agnostic():
-    """A fake method with different roles runs through the SAME tick() unchanged —
+    """A fake method with different roles runs through the SAME tick() unchanged,
     this is the proof that aeroponic/nft drop in without editing the loop."""
     import eden.loop as looplib
 

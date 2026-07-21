@@ -1,14 +1,14 @@
-# The personal Eden instance (becomes "Hortus" on extraction). PURE DATA — no
+# The personal Eden instance (becomes "Hortus" on extraction). PURE DATA: no
 # logic. eden/ imports nothing from here; config.py reads this path.
 #
 # v1 = ONE zone, ONE basil plant, DWC. A second pot is a second block under
-# `zones:` — the structure is already N. Each resource is addressed by ROLE; the
+# `zones:`: the structure is already N. Each resource is addressed by ROLE; the
 # entity_id + scope are the wiring detail. Every entity is eden_z1_<role> so a
 # zone 2 (eden_z2_<role>) can never collide and HA history never gets re-keyed.
 
 zones:
   - id: z1
-    display_name: "Eden Z1 — Basil"
+    display_name: "Eden Z1 (Basil)"
     method: dwc
     profile_id: basil_genovese
     enabled: true
@@ -28,7 +28,7 @@ zones:
         scope: zone
 
       - id: z1.air_pump_ok
-        role: air_pump_ok          # reflex/alert ONLY — never an agent actuator
+        role: air_pump_ok          # reflex/alert ONLY, never an agent actuator
         kind: sensor
         entity_id: binary_sensor.eden_z1_air_pump_ok
         scope: zone

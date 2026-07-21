@@ -2,7 +2,7 @@
 never hardcodes pH. It reads the zone's method, asks plan() for desired Actions,
 and applies each through the single actuate() write path (reflex-clamped).
 
-Identical for every method and every zone — adding a method or a zone never edits
+Identical for every method and every zone, adding a method or a zone never edits
 this file. That's the test the directive demands.
 
 Note the two adversarial fixes wired in:
@@ -48,7 +48,7 @@ def run_once(
     zones: dict[str, Zone], tools, profiles: dict, recent_by_zone: dict, now: float
 ) -> None:
     """Tick every zone once. The Gardener calls this on its slow cadence (cron /
-    interval). Fast life-critical loops are NOT here — they're in the reflex tier."""
+    interval). Fast life-critical loops are NOT here, they're in the reflex tier."""
     for zone in zones.values():
         recent = recent_by_zone.get(zone.id, [])
         applied = tick(zone, tools, profiles, recent, now)

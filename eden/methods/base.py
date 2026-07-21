@@ -4,7 +4,7 @@ touching loop.py, the tool API, the entity contract, or the data model.
 
 Mirrors saccade/sensors/base.py: a tiny Protocol, concrete impls in sibling
 files, selected by a config string via if/elif (see methods/__init__.py). No
-registry, no entry-points, no validate() pass — that machinery is YAGNI at one
+registry, no entry-points, no validate() pass, that machinery is YAGNI at one
 method and is a cheap two-way door to add when a SECOND method exists.
 
 Two things the candidates' first cut got wrong and this fixes:
@@ -12,7 +12,7 @@ Two things the candidates' first cut got wrong and this fixes:
 1. plan() takes RECENT ACTIONS, not just current readings. pH/EC have long dead
    time (a dose takes 10+ min to register). A controller that re-doses every tick
    because "pH still high" overshoots. State is PASSED IN (not fetched inside) so
-   plan() stays a pure function — still trivially stub-testable.
+   plan() stays a pure function, still trivially stub-testable.
 
 2. A method declares its REFLEX requirements, not only its agent-side cadence.
    The two-tier split means life-critical fast loops live in firmware/HA, not in
@@ -63,7 +63,7 @@ from dataclasses import dataclass, field  # noqa: E402 (kept near its only user)
 
 @dataclass
 class ReflexSpec:
-    """The firmware/HA-resident guarantees a method needs. This is DECLARATIVE —
+    """The firmware/HA-resident guarantees a method needs. This is DECLARATIVE,
     eden does not run it; it's the spec you implement in esphome/*.yaml +
     reflex/*.yaml (HA blueprint) once per method. Naming it here is what stops a
     new fast method from relitigating the agent/reflex boundary."""

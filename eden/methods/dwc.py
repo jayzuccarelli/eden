@@ -1,7 +1,7 @@
 """DWC (Deep Water Culture): roots permanently submerged in one oxygenated
 reservoir. Chemistry drifts slowly, so the AGENT tick is minutes-scale. The
 only fast/life-critical things (dose cap, light schedule, air-pump alert) live
-in the REFLEX layer per reflex_spec() — never in plan().
+in the REFLEX layer per reflex_spec(), never in plan().
 
 This is the ONLY GrowMethod in v1. Aeroponic/NFT are new files; nothing here or
 in loop.py changes when they're added.
@@ -35,8 +35,9 @@ class DWCMethod:
 
         ph = readings.get("ph")
         ph_band = profile.bands["ph"]
-        if ph and not ph.stale and ph.value > ph_band.hi:  # noqa: SIM102 — keep the guard comment separate
-            # Dead-time guard: skip if we dosed within the refractory window — the
+        # Kept as a nested if so the dead-time guard below keeps its own comment.
+        if ph and not ph.stale and ph.value > ph_band.hi:  # noqa: SIM102
+            # Dead-time guard: skip if we dosed within the refractory window; the
             # last dose may not have registered yet (overshoot prevention).
             if not self._dosed_recently(recent_actions, "ph_down_dose", now):
                 actions.append(
@@ -50,7 +51,7 @@ class DWCMethod:
 
         # Photoperiod is a REFLEX-tier schedule (survives agent offline). The agent
         # only sets brightness policy; it does not run the on/off clock. v1 keeps
-        # this minimal — light scheduling is fully in reflex/esphome.
+        # this minimal: light scheduling is fully in reflex/esphome.
         return actions
 
     def _dosed_recently(self, recent: list[Action], role: str, now: float) -> bool:
