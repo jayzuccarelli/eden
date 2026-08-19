@@ -115,6 +115,9 @@ ESP32-S3 pinout, and the germination steps to go from empty bucket to basil.
 section first: this build puts mains-powered equipment beside an open bucket of
 water and has you handle a corrosive liquid.
 
+Provided as is, without warranty, and built at your own risk. See the
+[Disclaimer](BUILD.md#disclaimer) and the [LICENSE](LICENSE).
+
 ## Deliberately NOT built (YAGNI: add when a 2nd method/zone is real)
 
 No plugin registry / entry-points, no central Intent dispatch, no relational

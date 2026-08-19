@@ -365,3 +365,26 @@ numbers and make the small daily decisions, that's the software side we've alrea
 built; I'll switch it on once you've got real sensor readings flowing.
 
 You did it. From a box of parts to a plant a model tends.
+
+---
+
+## Disclaimer
+
+This guide and the accompanying software are provided **as is, without warranty
+of any kind**, express or implied, as set out in the project's MIT
+[LICENSE](LICENSE). You build, wire, and operate this system entirely at your own
+risk. The authors accept no liability for any injury, property damage, or loss
+arising from its use.
+
+Nothing here is professional electrical, chemical, or legal advice. Where this
+guide and a product's own datasheet or safety data sheet disagree, follow the
+manufacturer. Comply with the electrical and building codes that apply where you
+live, and if any step is beyond your confidence, get a qualified electrician.
+
+Part numbers and links were accurate at the time of writing and drift over time.
+Verify every component against its own datasheet before wiring it.
+
+One food note, since the point of this is basil you eat: this is a hobby system
+that shares a bench with dosing chemicals. Wash what you harvest, and don't eat
+from a reservoir you've contaminated.
+
