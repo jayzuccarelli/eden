@@ -110,6 +110,13 @@ Eden runs on a free compute base (a box with Home Assistant + a Claude API key)
 plus off-the-shelf hydroponic hardware. **[docs/hardware.md](docs/hardware.md)** is
 the full bill of materials — every part, where to buy it, the verified XIAO
 ESP32-S3 pinout, and the germination steps to go from empty bucket to basil.
+**[BUILD.md](BUILD.md)** is the step-by-step assembly manual.
+
+**Read [BUILD.md's safety section](BUILD.md#safety-read-this-once-before-you-start)
+before you start.** This build puts mains-powered equipment beside an open bucket
+of water and has you handle a corrosive liquid. Provided as is, without warranty,
+and built at your own risk: see the [Disclaimer](BUILD.md#disclaimer) and the
+[LICENSE](LICENSE).
 
 ## Deliberately NOT built (YAGNI — add when a 2nd method/zone is real)
 
