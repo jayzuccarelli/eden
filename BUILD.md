@@ -307,10 +307,10 @@ It'll be *wrong* until calibrated — that's next.
 2. Dip it in the **7.00** bottle, swirl gently, wait ~1 minute for the number to
    settle. Note the raw value.
 3. Rinse, dab, dip in the **4.00** bottle, wait ~1 minute, note that raw value.
-4. Tell me both raw numbers (or put them into the firmware's calibration lines).
-   I'll set the two-point calibration in `eden-zone.yaml` so the reading reads
-   true. Right now the firmware has placeholder calibration numbers — yours
-   replace them.
+4. Put both raw numbers into the `calibrate_linear` block in
+   `esphome/eden-zone.yaml`, mapping each raw reading to its known buffer value
+   (7.00 and 4.00). Right now that block holds placeholder numbers — yours
+   replace them. Until you do, every pH reading is wrong.
 
 **Set aside.** (Keep the probe tip wet — never let it dry out. Park it in plain
 water or its storage cap until the bucket's ready.)
@@ -348,8 +348,9 @@ Everything's wired and wet. Brain on USB, brick in the wall, air pump humming.
 In Home Assistant every Eden entity should be live: pH, water temp, the dose
 switch, the light. The firmware already keeps the plant safe on its own (2-second
 dose cap, 6:00–20:00 light). The last step is letting the Claude Gardener watch the
-numbers and make the small daily decisions — that's the software side we've already
-built; I'll switch it on once you've got real sensor readings flowing.
+numbers and make the small daily decisions — that's the software side, already
+built. Point it at your Home Assistant and give it an API key once real sensor
+readings are flowing (see the Run section of the [README](README.md)).
 
 You did it. From a box of parts to a plant a model tends.
 
