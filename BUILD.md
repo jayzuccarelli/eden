@@ -6,6 +6,42 @@ you pick up some parts, wire them, test that one thing works, then **set it asid
 and move to the next. Nothing here needs water until the very end, so you can't
 ruin anything while learning.
 
+## Safety, read this once before you start
+
+This build puts mains-powered equipment next to an open bucket of water, and has
+you handle a corrosive liquid. Neither risk goes away, but both are manageable,
+and the precautions that manage them are cheap.
+
+- **Plug anything mains-powered into a GFCI / RCD outlet.** That means the air
+  pump and the grow light. If the outlet isn't protected, use a plug-in GFCI
+  adapter. Water plus mains is the one failure mode in this build that hurts you
+  rather than the plant.
+- **Put a check valve in the air line, or keep the pump above the water line.**
+  The pump sits beside the bucket, below the water. When it stops, water siphons
+  back down the hose into a mains-powered housing. A one-way check valve costs
+  about a dollar and blocks that path; mounting the pump higher than the water
+  does the same job for free.
+- **Leave a drip loop in every cable.** Let each cord hang below its outlet
+  before rising to the plug, so water running down the cable drips on the floor
+  instead of into the socket. Keep the 12V brick off the floor and away from the
+  bucket.
+- **Wear gloves and eye protection when handling pH-Down and nutrients.** pH-Down
+  is an acid, typically phosphoric. Add acid to water, never water to acid, and
+  never mix pH-Up and pH-Down directly. Store both in their original labelled
+  bottles, out of reach of children and pets. If it reaches skin, flush with
+  running water for about 15 minutes; if it reaches an eye, irrigate immediately
+  and get medical attention. Follow the safety data sheet on the bottle over
+  anything written here.
+- **Wire with the 12V brick unplugged.** Components C and D have you screwing
+  bare conductors into terminals. Do that with no power in the circuit, and plug
+  the brick in only when a step tells you to.
+- **Solder somewhere ventilated**, wear eye protection for it, and treat the iron
+  as hot for several minutes after you unplug it.
+
+The reflex tier caps what the *software* can do, including the dose caps in
+`esphome/`. It cannot protect you from wiring or chemistry. That part is on the
+builder.
+
 Two ideas that make the whole thing click:
 
 1. **There are two power supplies.** A USB cable powers the *brain* (the little
@@ -316,3 +352,26 @@ numbers and make the small daily decisions — that's the software side we've al
 built; I'll switch it on once you've got real sensor readings flowing.
 
 You did it. From a box of parts to a plant a model tends.
+
+
+---
+
+## Disclaimer
+
+This guide and the accompanying software are provided **as is, without warranty
+of any kind**, express or implied, as set out in the project's MIT
+[LICENSE](LICENSE). You build, wire, and operate this system entirely at your own
+risk. The authors accept no liability for any injury, property damage, or loss
+arising from its use.
+
+Nothing here is professional electrical, chemical, or legal advice. Where this
+guide and a product's own datasheet or safety data sheet disagree, follow the
+manufacturer. Comply with the electrical and building codes that apply where you
+live, and if any step is beyond your confidence, get a qualified electrician.
+
+Part numbers and links were accurate at the time of writing and drift over time.
+Verify every component against its own datasheet before wiring it.
+
+One food note, since the point of this is basil you eat: this is a hobby system
+that shares a bench with dosing chemicals. Wash what you harvest, and don't eat
+from a reservoir you've contaminated.
