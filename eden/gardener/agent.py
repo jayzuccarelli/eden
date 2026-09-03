@@ -216,7 +216,7 @@ def _result_json(value: object) -> str:
 
 def journal_sink_factory(path: str):
     def sink(record: dict) -> None:
-        with open(path, "a") as f:
+        with open(path, "a", encoding="utf-8") as f:
             f.write(json.dumps(record) + "\n")
 
     return sink

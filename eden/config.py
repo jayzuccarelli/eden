@@ -19,7 +19,7 @@ from eden.schema import Band, PlantProfile, Resource, Scope, Zone
 
 def _apply_dotenv(path: str) -> None:
     try:
-        with open(path) as f:
+        with open(path, encoding="utf-8") as f:
             lines = f.readlines()
     except OSError:
         return
@@ -51,7 +51,7 @@ def load_instance(instance_dir: str) -> tuple[dict[str, Zone], dict[str, PlantPr
     """Parse instance/zones.yaml + instance/profiles/*.yaml into domain objects.
     A flat dict + tiny resolution — NOT a relational registry (that's YAGNI for
     one ~4-device zone). Split into more files / a DB later if it grows."""
-    with open(os.path.join(instance_dir, "zones.yaml")) as f:
+    with open(os.path.join(instance_dir, "zones.yaml"), encoding="utf-8") as f:
         raw = yaml.safe_load(f)
 
     profiles: dict[str, PlantProfile] = {}
@@ -59,7 +59,7 @@ def load_instance(instance_dir: str) -> tuple[dict[str, Zone], dict[str, PlantPr
     for fn in os.listdir(prof_dir):
         if not fn.endswith((".yaml", ".yml")):
             continue
-        with open(os.path.join(prof_dir, fn)) as f:
+        with open(os.path.join(prof_dir, fn), encoding="utf-8") as f:
             p = yaml.safe_load(f)
         profiles[p["id"]] = PlantProfile(
             id=p["id"],

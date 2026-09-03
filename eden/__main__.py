@@ -36,7 +36,7 @@ def main() -> None:
         print("ANTHROPIC_API_KEY not set — skipping the agentic pass")
         return
 
-    with open(os.path.join(c.instance_dir, "prompt.md")) as f:
+    with open(os.path.join(c.instance_dir, "prompt.md"), encoding="utf-8") as f:
         system_prompt = f.read()
     gardener = Gardener(tools, c.gardener_model, system_prompt)
     print(gardener.run(TICK_INSTRUCTION))
